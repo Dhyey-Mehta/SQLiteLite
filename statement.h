@@ -1,21 +1,21 @@
 #pragma once
-#include <stdio.h>
-#include "input_buffer.h"
+#include "Input_buffer.h"
+#include "Table.h"
 
-typedef enum { 
+typedef enum {
 STATEMENT_INSERT, 
 STATEMENT_SELECT 
 } StatementType;
 
 typedef struct {
   StatementType type;
+  Row row_to_insert;
 } Statement;
 
 typedef enum {
   PREPARE_SUCCESS,
-  PREPARE_UNRECOGNIZED
+  PREPARE_UNRECOGNIZED,
+  PREPARE_SYNTAX_ERROR
 } StatementPrepareStatus;
 
 StatementPrepareStatus prepare_statement(InputBuffer* input_buffer, Statement *statement);
-
-void execute_statement(Statement *statement);

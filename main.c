@@ -1,11 +1,12 @@
 #include <stdio.h>
-#include "input_buffer.h"
-#include "meta_command.h"
-#include "statement.h"
-
+#include "Input_buffer.h"
+#include "Statement.h"
+#include "Execute.h"
+#include "Table.h"
 
 int main() {
     InputBuffer *input_buffer = create_input_buffer();
+    Table *table = new_table();
     while (1) {
        printf("db > ");
        read_input(input_buffer);
@@ -14,7 +15,7 @@ int main() {
           case META_COMMAND_SUCCESS:
             continue;
           case META_UNRECOGNIZED_COMMAND:
-            printf("Unrecognized command!\n");
+            printf("Unrecognized meta command!\n");
             continue;
          }
        }
@@ -23,11 +24,21 @@ int main() {
       switch(prepare_statement(input_buffer, &statement)) {
         case PREPARE_SUCCESS:
           break;
+        case PREPARE_SYNTAX_ERROR:
+          printf("Syntax error!\n");
+          continue;
         case PREPARE_UNRECOGNIZED:
           printf("Unrecognized command!\n");
           continue;
       }
-      execute_statement(&statement);
-      printf("Executed statement!\n");
+      
+      switch(execute_statement(&statement, table)){
+        case(EXECUTE_SUCCESS):
+          printf("Executed statement!\n");
+          break;
+        case(EXECUTE_FAIL):
+          printf("Error executing statemenT!\n");
+          break;
+    } 
     }
 }
