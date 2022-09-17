@@ -8,7 +8,7 @@ typedef enum {
   META_UNRECOGNIZED_COMMAND
 } MetaCommandResult;
 
-MetaCommandResult execute_meta_command(InputBuffer *input_buffer);
+MetaCommandResult execute_meta_command(InputBuffer *input_buffer, Table *table);
 
 typedef enum { 
   EXECUTE_SUCCESS,

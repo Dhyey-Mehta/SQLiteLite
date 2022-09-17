@@ -1,7 +1,8 @@
 #include "Execute.h"
 
-MetaCommandResult execute_meta_command(InputBuffer *input_buffer) {
+MetaCommandResult execute_meta_command(InputBuffer *input_buffer, Table *table) {
   if (strcmp(input_buffer->buffer, ".exit") == 0) {
+    free_table(table);
     free_input_buffer(input_buffer);
     exit(EXIT_SUCCESS);
     return META_COMMAND_SUCCESS;

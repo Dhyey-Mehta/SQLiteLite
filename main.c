@@ -4,14 +4,19 @@
 #include "Execute.h"
 #include "Table.h"
 
-int main() {
+int main(int argc, char* argv[]) {
+    if (argc != 2) {
+      printf("No database filename given!\n");
+      exit(EXIT_FAILURE);
+    }
+    char *db_file_name = argv[1];
     InputBuffer *input_buffer = create_input_buffer();
-    Table *table = new_table();
+    Table *table = new_table(db_file_name);
     while (1) {
        printf("db > ");
        read_input(input_buffer);
        if (input_buffer->buffer[0] == '.') {
-         switch (execute_meta_command(input_buffer)) {
+         switch (execute_meta_command(input_buffer, table)) {
           case META_COMMAND_SUCCESS:
             continue;
           case META_UNRECOGNIZED_COMMAND:
@@ -40,5 +45,5 @@ int main() {
           printf("Error executing statemenT!\n");
           break;
     } 
-    }
+  }
 }

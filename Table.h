@@ -1,9 +1,14 @@
 #pragma once
 
+#define size_of_attribute(Struct, Attribute) sizeof(((Struct*)0)->Attribute);
+// #define TABLE_MAX_PAGES 100
+// #define PAGE_SIZE 4096
+
 #include <stdlib.h>
 #include <stdint.h>
 #include <stdio.h>
 #include <string.h>
+#include "Pager.h"
 
 #define COLUMN_USERNAME_SIZE 32
 #define COLUMN_EMAIL_SIZE 255
@@ -15,12 +20,9 @@ typedef struct {
   char email[COLUMN_EMAIL_SIZE + 1];
 } Row;
 
-#define size_of_attribute(Struct, Attribute) sizeof(((Struct*)0)->Attribute);
-#define TABLE_MAX_PAGES 100
-
 typedef struct {
   uint32_t num_rows;
-  void* pages[TABLE_MAX_PAGES];
+  Pager* pager;
   uint32_t max_rows;
 } Table;
 
