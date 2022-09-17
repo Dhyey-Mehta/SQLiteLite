@@ -1,7 +1,9 @@
 #pragma once
+#include "Constants.h"
 #include "Input_buffer.h"
 #include "Statement.h"
 #include "Table.h"
+#include "Cursor.h"
 
 typedef enum {
   META_COMMAND_SUCCESS,

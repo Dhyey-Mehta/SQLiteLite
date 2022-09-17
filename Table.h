@@ -1,17 +1,13 @@
 #pragma once
 
-#define size_of_attribute(Struct, Attribute) sizeof(((Struct*)0)->Attribute);
-// #define TABLE_MAX_PAGES 100
-// #define PAGE_SIZE 4096
-
 #include <stdlib.h>
 #include <stdint.h>
 #include <stdio.h>
+#include <stdbool.h>
 #include <string.h>
+#include "Constants.h"
 #include "Pager.h"
 
-#define COLUMN_USERNAME_SIZE 32
-#define COLUMN_EMAIL_SIZE 255
 
 typedef struct {
   uint32_t id;
@@ -21,10 +17,16 @@ typedef struct {
 } Row;
 
 typedef struct {
-  uint32_t num_rows;
+  uint32_t root_page_num;
   Pager* pager;
-  uint32_t max_rows;
 } Table;
+
+typedef struct {
+  Table *table;
+  uint32_t page_num;
+  uint32_t cell_num;
+  bool end_of_table; // Past last element in table (potentially for insert)
+} Cursor;
 
 Table* new_table();
 void free_table(Table* table);
@@ -33,3 +35,5 @@ void* row_location(Table* table, uint32_t row_num);
 void compress_row(Row *source, void *destination);
 void decompress_row(void *source, Row *destination);
 void print_row(Row *row);
+ 
+void* cursor_val(Cursor *cursor);

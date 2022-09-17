@@ -12,24 +12,28 @@ MetaCommandResult execute_meta_command(InputBuffer *input_buffer, Table *table) 
 }
 
 ExecuteResult execute_insert(Statement* statement, Table* table){
-  // Check for max_rows:
-  if (table->num_rows == table->max_rows) {
+ void* node = get_page(table->pager, table->root_page_num);
+  if ((*leaf_node_num_cells(node) >= LEAF_NODE_MAX_CELLS)) {
     return EXECUTE_FAIL;
-  }
-
+  } 
+  Cursor *end_cursor = end_of_table(table);
   Row *new_row = &(statement->row_to_insert);
-  compress_row(new_row, row_location(table, table->num_rows));
-  table->num_rows += 1;
+  leaf_node_insert(end_cursor, new_row->id, new_row);
 
+  free(end_cursor);
   return EXECUTE_SUCCESS;
 }
 
 ExecuteResult execute_select(Statement* statement, Table* table) {
+  Cursor* cursor = start_of_table(table);
   Row row;
-  for (uint32_t i = 0; i < table->num_rows; i++) {
-    decompress_row(row_location(table, i), &row);
+  while (!(cursor->end_of_table)) {
+    decompress_row(cursor_val(cursor), &row);
     print_row(&row);
+    cursor_advance(cursor);
   }
+
+  free(cursor);
   return EXECUTE_SUCCESS;
 }
 
