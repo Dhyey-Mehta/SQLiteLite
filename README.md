@@ -1,10 +1,10 @@
 # SQLiteLite
 
-Relational database mimicing the SQLite architecture made from scratch in C. Inspired by: https://cstack.github.io/db_tutorial/.
+Relational database made from scratch in C. Inspired by: https://cstack.github.io/db_tutorial/.
 
 ### Commands
 
-- Insert ID_NUMBER NAME EMAIL: Inserts a row into the database
+- Insert: Inserts a row into the database
 - Select: Displays all data stored in the database
 - .exit: Saves cached data to disk and exits
 
